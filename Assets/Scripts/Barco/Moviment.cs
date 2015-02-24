@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Moviment : MonoBehaviour {
 	public float speed;
-	bool canMove = true;
+	public bool canMove = true;
 	// Use this for initialization
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Limit"  || coll.gameObject.tag == "Barco")
@@ -12,7 +12,11 @@ public class Moviment : MonoBehaviour {
 	void OnMouseOver (){
 		if (Input.GetKey(KeyCode.Mouse0)){
 			Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition); 	
-			transform.position = pos;
+			transform.position = pos; 
+			gameObject.GetComponent<Collider2D> ().isTrigger = true;
+		}
+		if (Input.GetKeyUp(KeyCode.Mouse0)){
+			gameObject.GetComponent<Collider2D> ().isTrigger = false;
 		}
 	}
 	
