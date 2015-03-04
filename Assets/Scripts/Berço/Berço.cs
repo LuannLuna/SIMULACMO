@@ -2,20 +2,15 @@
 using System.Collections;
 
 public class Berço : MonoBehaviour {
-
+	public bool empty;
+	private Animator _animation;
+	
 	void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.gameObject.tag == "HitBox"){
-			gameObject.GetComponent<Animator> ().SetTrigger("start");
-			coll.gameObject.GetComponentInParent<Moviment> ().canMove = false;
-		} 	
-	}
-	// Use this for initialization
-	void Start () {
-	
+		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	void Awake (){
+		empty = true;
+		_animation = gameObject.GetComponent <Animator> ();
 	}
 }
