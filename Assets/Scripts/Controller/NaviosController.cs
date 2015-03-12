@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Controller : MonoBehaviour {
+public class NaviosController : MonoBehaviour {
 	public GameObject navioModelo;
 	public Transform pointToRespawn;
 	public Transform mar;
@@ -27,6 +27,9 @@ public class Controller : MonoBehaviour {
 			barcos.Add (idBarco, barco);
 			idBarco ++;
 			bool cargaDescarga = (Random.Range (0, 100) % 5 == 0);
+			barco.GetComponent <NavioData> ().produto1 = (Random.Range(100, 1000));
+			barco.GetComponent <NavioData> ().produto2 = (Random.Range(100, 1000));
+			barco.GetComponent <NavioData> ().produto3 = (Random.Range(100, 1000));
 			barco.GetComponent <NavioMoviment> ().cargaDescarga = cargaDescarga;
 		}
 	}
@@ -60,13 +63,9 @@ public class Controller : MonoBehaviour {
 
 
 	private IEnumerator StarBoat (){
-		yield return new WaitForSeconds (1.5f);
-		if (barcos[i] != null && i < barcos.Count){
-			barcos[i].GetComponent <NavioMoviment> ().canMove = true;
-			i++;
-			StarBoat ();
-		}else if (i >= barcos.Count){
-			i = 0;
+		foreach (var barco in barcos) {
+			yield return new WaitForSeconds (2F);
+			barco.Value.GetComponent <NavioMoviment> ().canMove = true;
 		}
 	}
 

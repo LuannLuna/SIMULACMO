@@ -16,7 +16,7 @@ public class NavioMoviment : MonoBehaviour {
 	public bool cargaDescarga; // true para cargar e false para descarga;
 
 	private Vector2 originalPos;
-	private Controller _controller;
+	private NaviosController _controller;
 	private Transform exitPoint;
 
 	private void Awake ()
@@ -28,12 +28,13 @@ public class NavioMoviment : MonoBehaviour {
 		canAtrack = false;
 		backOriginalPos = false;
 		destroyItSelf = false;
-		_controller = GameObject.FindWithTag ("MainCamera").GetComponent <Controller> ();
+		_controller = GameObject.FindWithTag ("MainCamera").GetComponent <NaviosController> ();
 		exitPoint = GameObject.Find ("ExitPoint").GetComponent <Transform> ();
 	}
 
 	private void OnMouseOver ()
 	{
+		gameObject.GetComponent <NavioData> ().setInfo (cargaDescarga);
 		if (Input.GetKey (KeyCode.Mouse0)) {
 			selected = true;
 			followMousePos = true;
@@ -106,7 +107,9 @@ public class NavioMoviment : MonoBehaviour {
 			{
 				_berco.SetTrigger("atracando");
 				_berco.SetBool("cargaDescarga", cargaDescarga);
-				_controller.StarAll ();
+				_berco.gameObject.GetComponent <Berco> ().atracou = true;
+				_controller.barcos.Remove(id);
+				_controller.RestarFila ();
 				Destroy (gameObject);
 			}
 		}
