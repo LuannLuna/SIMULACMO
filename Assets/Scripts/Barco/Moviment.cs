@@ -101,7 +101,6 @@ public class Moviment : MonoBehaviour {
 			if (hit.collider.gameObject.tag == "Barco" || hit.collider.gameObject.tag == "Limit"){
 				canMove = false;
 			}
-			Debug.Log(hit.collider.gameObject.tag);
 		}
 		GoToBerco();
 	}
