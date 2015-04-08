@@ -43,14 +43,16 @@ public class NaviosController : MonoBehaviour {
 
 	public void StopAll (){//Manda todos os barcos a pararem de andar
 		foreach (GameObject barco in barcos) {
-			barco.GetComponent <NavioMoviment> ().canMove = false;
+			if (barco != null)
+				barco.GetComponent <NavioMoviment> ().canMove = false;
 		}
 	}
 	
 	public void DesactiveCollider (){//Desativa todos os colliders dos barcos, menos o do barco selecionado
 		foreach (GameObject barco in barcos){
 			if (barco.GetComponent <NavioMoviment> ().id != idBarcoSelecionado){
-				barco.GetComponent <PolygonCollider2D> ().enabled = false;
+				if (barco != null)
+					barco.GetComponent <PolygonCollider2D> ().enabled = false;
 			}
 		}
 	}
@@ -58,16 +60,19 @@ public class NaviosController : MonoBehaviour {
 	public void ActiveCollider (){//Aciona todos os colliders dos barcos, menos o do barco selecioando
 		foreach (GameObject barco in barcos){
 			if (barco.GetComponent <NavioMoviment> ().id != idBarcoSelecionado){
-				barco.GetComponent <PolygonCollider2D> ().enabled = true;
+				if (barco != null)
+					barco.GetComponent <PolygonCollider2D> ().enabled = true;
 			}
-		}
+		}//Apos todos os barcos terem seus colliders ativados permite que o controlador de respawn em novos barcos
+		canRespawn = true;
+		timer = Time.time + timeToRespawn; //atualiza o timer devido ao tempo que ele ficou segurando o barco
 	}
 
 	private void PreventOverFlow (){ //Cria um raycast a frente do ponto de Respawn para que para de gerar novos barcos se nao tem mais espaço fisicamente na tela
 		Vector2 pos = pointToRespawn.position;
 		RaycastHit2D hit = Physics2D.Raycast (pos, -Vector2.right, 2f);
 		Debug.DrawRay (pos, new Vector2 (-2f, 0f), Color.red);
-		if (hit.collider == null) {
+		if (hit.collider == null && idBarcoSelecionado < 0) {
 			canRespawn = true;
 		} else {
 			canRespawn = false;

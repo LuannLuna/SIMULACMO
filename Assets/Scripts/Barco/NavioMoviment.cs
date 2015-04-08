@@ -23,6 +23,13 @@ public class NavioMoviment : MonoBehaviour {
 	private Transform exitPoint; //Variavel que guarda a posiçao do ponto de saida da Tela, posiçao que o barco se direcionara quando ele for atracar em um berço
 	#endregion VariaveisPrivadas
 	
+	public void BackImidiatly (){
+		transform.position = originalPos;
+		followMousePos = false;
+		_controller.ActiveCollider ();
+		_controller.idBarcoSelecionado = -1;
+	}
+	
 	private void Awake ()
 	{ 
 		canMove = true; //Inicialmente todo barco pode se mover
@@ -45,6 +52,7 @@ public class NavioMoviment : MonoBehaviour {
 			_controller.StopAll (); // Informa para o controlador dos Navios que nenhum barco pode andar  para que nao teha sobreposiçao de barco na fila
 			_controller.idBarcoSelecionado = id; // Informa para o controlador de Navios quem eh o barco que esta sendo selecionado
 			_controller.DesactiveCollider (); // Informa ao controlador para desativar o collider dos demais navios a fim de nao se colidirem e nem que o mouse "pegar" mais de um navio
+			_controller.canRespawn = false;
 			gameObject.GetComponent <SpriteRenderer> ().sortingOrder = 10; // Sobe o barco na ordem de Layers para que ele sempre esteje a frente dos demais navios
 		}
 		if (Input.GetKeyUp (KeyCode.Mouse0)) { //Capta quando o botao direito do Mouse foi solto
@@ -112,7 +120,7 @@ public class NavioMoviment : MonoBehaviour {
 				_berco.SetBool("cargaDescarga", cargaDescarga); //Informa ao animator se a animaçao do navio deve ser de carga ou descarga
 				_berco.gameObject.GetComponent <Berco> ().atracou = true; //Informa ao berco que o navio ja atracou
 //				_controller.barcos.Remove(id);
-				_controller.barcos.Remove (gameObject); //informa ao controller que ele devera ser removido da lista de navios
+				//_controller.barcos.Remove (gameObject); //informa ao controller que ele devera ser removido da lista de navios
 				_controller.RestarFila (1.5F); // Manda a fila Restartar com 1.5s de Delay de 1 pro outro
 				Destroy (gameObject); // Destroi o gameoject
 			}

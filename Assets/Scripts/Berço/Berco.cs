@@ -46,16 +46,17 @@ public class Berco : MonoBehaviour {
 			coll.gameObject.GetComponent <NavioMoviment> ().followMousePos = false;
 			empty = false;
 			Destroy (coll.gameObject.GetComponent <PolygonCollider2D> ());
+			_controll.barcos.Remove(coll.gameObject);
 			sumCarga = navioData.produto1 + navioData.produto2 + navioData.produto3;
 			timer = sumCarga / capacidadeCargaDescarga;
 			_controll.ActiveCollider ();
 			_controll.idBarcoSelecionado = -1;
 		} else {
-			coll.gameObject.GetComponent <NavioMoviment> ().backOriginalPos = true;
+			coll.gameObject.GetComponent <NavioMoviment> ().BackImidiatly ();
 		}
 		Debug.Log (coll.gameObject.name);
 	}
-
+ 
 	private void OnMouseOver (){
 		boxInfo.text = "Berço " + gameObject.name [gameObject.name.Length -1];
 		if (empty) {
