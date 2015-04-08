@@ -6,6 +6,8 @@ public class Berco : MonoBehaviour {
 	public bool empty;
 	public float capacidadeCargaDescarga;
 	public bool atracou;
+	public bool manutencao;
+	public GameObject manutencaoIcon;
 
 	private NavioMoviment navioAtracado;
 	private NavioData navioData;
@@ -17,7 +19,13 @@ public class Berco : MonoBehaviour {
 	private float sumCarga;
 	private float timer;
 	// Use this for initialization
-	void Awake ()
+	public void GetManutencaoOnOff (){
+		manutencaoIcon.SetActive (manutencao);
+		gameObject.GetComponent <BoxCollider2D> ().enabled = !manutencao;
+		_anim.SetBool ("manutencao", manutencao); 
+	}
+	
+	void Start ()
 	{
 		empty = true; 
 		atracou = false;
@@ -25,6 +33,7 @@ public class Berco : MonoBehaviour {
 		_controll = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent <NaviosController> ();
 		_estoque =  GameObject.FindGameObjectWithTag ("MainCamera").GetComponent <Estoque> ();
 		boxInfo = GameObject.FindGameObjectWithTag ("BoxInfo").GetComponent <Text> ();
+		GetManutencaoOnOff ();
 	}
 
 	private void OnTriggerEnter2D (Collider2D coll)
@@ -37,14 +46,17 @@ public class Berco : MonoBehaviour {
 			coll.gameObject.GetComponent <NavioMoviment> ().followMousePos = false;
 			empty = false;
 			Destroy (coll.gameObject.GetComponent <PolygonCollider2D> ());
+			_controll.barcos.Remove(coll.gameObject);
 			sumCarga = navioData.produto1 + navioData.produto2 + navioData.produto3;
 			timer = sumCarga / capacidadeCargaDescarga;
+			_controll.ActiveCollider ();
+			_controll.idBarcoSelecionado = -1;
 		} else {
-			coll.gameObject.GetComponent <NavioMoviment> ().backOriginalPos = true;
+			coll.gameObject.GetComponent <NavioMoviment> ().BackImidiatly ();
 		}
 		Debug.Log (coll.gameObject.name);
 	}
-
+ 
 	private void OnMouseOver (){
 		boxInfo.text = "Berço " + gameObject.name [gameObject.name.Length -1];
 		if (empty) {
@@ -84,7 +96,6 @@ public class Berco : MonoBehaviour {
 			_estoque.produto3 += navioData.produto3;
 			navioData.produto3 = 0f;
 		}
-		Debug.Log ("Produto 1: " + _estoque.produto1 + "\nProduto 2: " + _estoque.produto2 + "\nProduto 3: " + _estoque.produto3);
 	}
 
 
@@ -114,7 +125,6 @@ public class Berco : MonoBehaviour {
 			_estoque.produto3 -= navioData.produto3;
 			navioData.produto3 = 0f;
 		}
-		Debug.Log ("Produto 1: " + _estoque.produto1 + "\nProduto 2: " + _estoque.produto2 + "\nProduto 3: " + _estoque.produto3);
 	}
 
 	// Update is called once per frame
@@ -145,3 +155,4 @@ public class Berco : MonoBehaviour {
 		}
 	}
 }
+	
