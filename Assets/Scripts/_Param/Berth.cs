@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Component
 {
-    public class Berth
+    class Berth
     {
         private double berth_speed;
 

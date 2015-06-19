@@ -9,7 +9,7 @@ using Component;
 
 namespace Data
 {
-    public class Parameters
+    class Parameters
     {
         private double[] cargo;			// Carga transportada: navio x matéria-prima
 
@@ -23,7 +23,7 @@ namespace Data
 
         public Ship[] ship;
         public Berth[] berth;
-		public RawMaterial[] material;
+        public Material[] material;
 
         public Parameters(string file)
         {
@@ -83,11 +83,11 @@ namespace Data
                 split = lines[p].Split(separators, StringSplitOptions.RemoveEmptyEntries);
             }
             split = lines[p].Split(separators_materials, StringSplitOptions.RemoveEmptyEntries);
-			material = new RawMaterial[split.Length - 2];
+            material = new Material[split.Length - 2];
             for (int n = 0; n < split.Length - 2; n++)
             {
-				material[n] = new RawMaterial(); 
-				material[n].setName(split[n + 2]);
+                material[n] = new Material(); 
+                material[n].setName(split[n + 2]);
             }
             numMaterials = material.Length;
             p++;

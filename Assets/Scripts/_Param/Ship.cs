@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Component
 {
-    public class Ship
+    class Ship
     {
         private int tide_arrival;
         private double[] cargo;
@@ -26,11 +26,5 @@ namespace Component
         public double[] getCargo() {
             return cargo;
         }
-
-		public void descarregar (double[] carga){
-			for (int i = 0; i < carga.Length; i++) {
-				cargo[i] -= carga[i];
-			}
-		}
     }
 }
